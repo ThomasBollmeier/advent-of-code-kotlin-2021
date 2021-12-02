@@ -1,8 +1,12 @@
+package de.tbollmeier.aoc2021.day01
+
+import java.io.File
+
 fun main() {
-    val depths = readInput("input01")
+    val depths = File("src/de/tbollmeier/aoc2021/day01/input01.txt").readLines()
         .map { it.toInt() }
 
-    //println(calcNumIncrements(depths))
+    println(calcNumIncrements(depths))
 
     val sums = createTriples(depths, depths.drop(1), depths.drop(2))
         .map { it.first + it.second + it.third }
