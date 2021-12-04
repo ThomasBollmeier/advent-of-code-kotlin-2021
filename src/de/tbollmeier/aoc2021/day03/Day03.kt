@@ -1,11 +1,10 @@
 package de.tbollmeier.aoc2021.day03
 
-import java.io.File
+import readInput
 
 fun main() {
 
-    val path = "src/de/tbollmeier/aoc2021/day03/input03.txt"
-    val binStrings = File(path).readLines()
+    val binStrings = readInput("input03")
 
     part1(binStrings)
     part2(binStrings)

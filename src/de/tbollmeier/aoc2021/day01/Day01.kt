@@ -1,9 +1,9 @@
 package de.tbollmeier.aoc2021.day01
 
-import java.io.File
+import readInput
 
 fun main() {
-    val depths = File("src/de/tbollmeier/aoc2021/day01/input01.txt").readLines()
+    val depths = readInput("input01")
         .map { it.toInt() }
 
     println(calcNumIncrements(depths))

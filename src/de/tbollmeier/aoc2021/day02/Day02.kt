@@ -1,11 +1,10 @@
 package de.tbollmeier.aoc2021.day02
 
-import java.io.File
+import readInput
 
 fun main() {
 
-    val path = "src/de/tbollmeier/aoc2021/day02/input02.txt"
-    val commands = File(path).readLines().parse()
+    val commands = readInput("input02").parse()
 
     // Part 1
     val position = commands.execute(Position(0, 0)) { pos, dir, step ->
