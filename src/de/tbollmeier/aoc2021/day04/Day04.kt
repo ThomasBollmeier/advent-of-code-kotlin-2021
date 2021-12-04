@@ -35,15 +35,16 @@ fun part2(lines: List<String>) {
     numbers.forEach { n ->
 
         bingos.forEach { it.mark(n) }
-        val bingosDone = bingos.filter { it.isComplete() }
-        bingos = bingos.filter { !it.isComplete() }
+        val (bingosDone, bingosTodo) = bingos.partition { it.isComplete() }
 
-        if (bingos.isEmpty()) {
+        if (bingosTodo.isEmpty()) {
             if (bingosDone.isNotEmpty()) {
                 println(n * bingosDone[0].sumOfUnmarked())
             }
             return
         }
+
+        bingos = bingosTodo
     }
 }
 
