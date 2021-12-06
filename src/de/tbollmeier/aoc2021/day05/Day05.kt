@@ -18,7 +18,7 @@ fun part1(input: List<String>) {
 }
 
 fun part2(input: List<String>) {
-    
+
     val numOverlapPositions = findNumOverlapPositions(input.map(::parseInputLine))
 
     println(numOverlapPositions)
@@ -26,7 +26,7 @@ fun part2(input: List<String>) {
 
 fun findNumOverlapPositions(lines: List<Line>): Int {
 
-    val numOverlayPositions = lines
+    return lines
         .flatMap { it.positions() }
         .fold(mutableMapOf<Position, Int>()) { counts, pos ->
             counts[pos] = counts.getOrDefault(pos, 0) + 1
@@ -34,8 +34,6 @@ fun findNumOverlapPositions(lines: List<Line>): Int {
         .values
         .filter { it > 1 }
         .size
-
-    return numOverlayPositions
 }
 
 data class Position(val row: Int, val col: Int)
