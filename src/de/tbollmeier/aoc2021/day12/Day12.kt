@@ -19,6 +19,7 @@ fun part1(input: List<String>) {
         counters.all { it == 1 }
     }
 
+    paths.forEach { println(it) }
     println(paths.size)
 }
 
@@ -119,16 +120,8 @@ class Path(private val elements: List<Cave>) {
 
     operator fun plus(cave: Cave) = Path(elements + cave)
 
-    override fun toString(): String {
-        var ret = ""
-        elements.forEach {
-            if (ret.isNotEmpty()) {
-                ret += ","
-            }
-            ret += it.name
-        }
-        return ret
-    }
+    override fun toString() =
+        elements.joinToString(",") { it.name }
 
     fun smallCaveStats() =
         elements
