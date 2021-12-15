@@ -51,7 +51,8 @@ class Cavern(private val riskLevels: RiskLevels) {
         while (todo.isNotEmpty()) {
 
             val current = getNextPos(todo, posInfoMap)
-            val posInfo = posInfoMap[current]!!
+            val (row, col) = current
+            val posInfo = posInfoMap[row][col]!!
 
             if (current == to) {
                 ret = posInfo.totalRisk
@@ -78,16 +79,16 @@ class Cavern(private val riskLevels: RiskLevels) {
         current: Position,
         totalRisk: Int,
         positions: List<Position>,
-        posInfoMap: MutableMap<Position, PositionInfo>) {
+        posInfoMap: Array<Array<PositionInfo?>>) {
 
         for (pos in positions) {
 
             val (row, col) = pos
-            val pinfo = posInfoMap[pos]!!
+            val posInfo = posInfoMap[row][col] ?: PositionInfo(Int.MAX_VALUE, null)
             val newTotalRisk = totalRisk + riskLevels[row][col]
 
-            if (newTotalRisk < pinfo.totalRisk) {
-                posInfoMap[pos] = PositionInfo(newTotalRisk, current)
+            if (newTotalRisk < posInfo.totalRisk) {
+                posInfoMap[row][col] = PositionInfo(newTotalRisk, current)
             }
         }
     }
@@ -110,10 +111,11 @@ class Cavern(private val riskLevels: RiskLevels) {
 
     private fun getNextPos(
         todo: MutableSet<Position>,
-        posInfoMap: MutableMap<Position, PositionInfo>): Position {
+        posInfoMap: Array<Array<PositionInfo?>>): Position {
 
-        val ret = todo.minByOrNull {
-            posInfoMap[it]!!.totalRisk
+        val ret = todo.minByOrNull { pos ->
+            val (row, col) = pos
+            posInfoMap[row][col]?.totalRisk ?: Int.MAX_VALUE
         }!!
 
         todo.remove(ret)
@@ -121,18 +123,11 @@ class Cavern(private val riskLevels: RiskLevels) {
         return ret
     }
 
-    private fun initPositionInfo(start: Position): MutableMap<Position, PositionInfo> {
+    private fun initPositionInfo(start: Position): Array<Array<PositionInfo?>> {
 
-        val ret = mutableMapOf<Position, PositionInfo>()
-
-        for (row in 0 until nRows) {
-            for (col in 0 until nCols) {
-                val pos = Position(row, col)
-                ret[pos] = PositionInfo(
-                    if (pos != start) Int.MAX_VALUE else 0,
-                    null)
-            }
-        }
+        val noPositionInfo: PositionInfo? = null
+        val ret = Array(nRows) { Array(nCols) { noPositionInfo } }
+        ret[start.row][start.col] = PositionInfo(0, null)
 
         return ret
     }
