@@ -1,4 +1,4 @@
-package de.tbollmeier.aoc2021
+package de.tbollmeier.aoc2021.day18
 
 import readInput
 
@@ -313,7 +313,7 @@ class Splitter: NumberVisitor {
 }
 
 data class ParseResult(
-    val number: Number, 
+    val number: Number,
     val parsedLen: Int
 )
 
