@@ -13,45 +13,32 @@ fun main() {
 
 fun part1(input: List<String>) {
 
-    var sum: Number? = null
-
-    for (line in input) {
-        val (n, _) = number(line)
-        sum = sum?.add(n) ?: n
-    }
-
     val interpreter = Interpreter()
-    val result = interpreter.evaluate(sum!!)
+    val numbers = input
+        .map {
+            val (num, _) = number(it)
+            num
+        }
+    val sum = numbers
+        .drop(1)
+        .fold(numbers[0]) { acc, n -> acc + n }
+    val result = interpreter.evaluate(sum)
 
     println(result)
 }
 
 fun part2(input: List<String>) {
 
+    val interpreter = Interpreter()
     val numbers = input.map {
         val (num, _) = number(it)
         num
     }
-
-    val interpreter = Interpreter()
-
-    val sums = mutableListOf<Number>()
-
-    for (i in numbers.indices) {
-        val a = numbers[i]
-        for (j in numbers.indices) {
-            if (i == j) {
-                continue
-            }
-            val b = numbers[j]
-            sums.add(a.add(b))
-        }
-    }
-
-    val result = sums
-        .maxOfOrNull {
-            interpreter.evaluate(it)
-        }
+    val result = numbers
+        .flatMap { a -> numbers.map { b -> a to b } }
+        .filterNot { it.first == it.second }
+        .map { it.first + it.second }
+        .maxOfOrNull { interpreter.evaluate(it) }
 
     println(result)
 }
@@ -68,6 +55,8 @@ sealed class Number {
         ret.reduce()
         return ret
     }
+
+    operator fun plus(other: Number) = add(other)
 
     abstract fun clone(): Number
 
