@@ -44,10 +44,12 @@ class Image(
     private val width = pixels[0].size
     private val height = pixels.size
 
-    fun countLitPixels() = pixels
-        .fold(0) { cnt, pixelLine ->
+    fun countLitPixels() = if (backGroundColor == 0)
+        pixels.fold(0) { cnt, pixelLine ->
             cnt + pixelLine.count { it == 1 }
         }
+    else
+        throw RuntimeException("There is an infinite number of lit pixels.")
 
     fun enhance(encoding: ColorEncoding): Image {
         val newLeftUpper = Pair(leftUpper.first - 1, leftUpper.second - 1)
